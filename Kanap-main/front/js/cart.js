@@ -188,9 +188,9 @@ function sendForm(e) {
   })
     .then((res) => res.json())
     .then((data) => {
-      const idOrder = data.idOrder;
+      const orderId = data.orderId;
       console.log("data: ", data);
-      window.location.href = "./confirmation.html" + "?idOrder=" + idOrder;
+      window.location.href = "./confirmation.html" + "?orderId=" + orderId;
     });
 }
 
