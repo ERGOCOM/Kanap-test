@@ -3,12 +3,11 @@ fetch("http://localhost:3000/api/products/")
     .then((res) => res.json())
     .then((products) => addProducts(products)) 
     
-/* Distribution des données de l'API */
+// Création d'une boucle for each pour l'affichage des produits
 function addProducts(sofa) {
     sofa.forEach((kanap) => {
         console.log("kanap: " ,kanap)
         const {_id,imageUrl,altTxt,name, description} = kanap
-
         const image = makeImage(imageUrl, altTxt)
         const anchor = makeAnchor(_id)
         const article = makeArticle()
@@ -24,20 +23,20 @@ function addProducts(sofa) {
   })
   
  }
-/* Insertion de "a" */
+// Création du lien de la carte produit par ID
 function makeAnchor(id) {
     const anchor = document.createElement("a")
     anchor.href = "./product.html?id=" + id
     return anchor
 }
         
- 
+// Anchor est relié à items et l'article est relié à anchor
 function appendChildren(anchor, article) {
         items.appendChild(anchor)
         anchor.appendChild(article)
     }
     
- /* Insertion de l'image */        
+ // Création de l'image       
     function makeImage(imageUrl, altTxt) {
         const image = document.createElement("img")
         image.src = imageUrl
@@ -45,14 +44,14 @@ function appendChildren(anchor, article) {
         return image
      }
 
- /* Insertion de "article" */       
+// Création d'article
 function makeArticle() {
     const article = document.createElement("article")
     console.log (article)
     return article
 }
 
-/* Insertion du "h3" */
+// Création du nom
 function makeH3(name) {
     const h3 = document.createElement("h3")
     h3.textContent = name
@@ -60,7 +59,7 @@ function makeH3(name) {
     return h3
  }
 
- /* Insertion de la description "p" */
+// Création de la description
 function makeParagraph(description) {
     const p = document.createElement("p")
     p.textContent = description

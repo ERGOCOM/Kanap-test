@@ -1,7 +1,6 @@
-const cart = [];
+let cart = [];
 
 takeItems();
-cart.forEach((item) => showItem(item));
 const form = document.querySelector(".cart__order__form");
 form.addEventListener("submit", (e) => sendForm(e));
 
@@ -10,8 +9,21 @@ function takeItems() {
   for (let i = 0; i < numberOfItems; i++) {
     const item = localStorage.getItem(localStorage.key(i));
     const itemObject = JSON.parse(item);
-    cart.push(itemObject);
+    const id = itemObject.id;
+    promises[i] =  fetch(`http://localhost:3000/api/products/${id}`)
+    .then((res) => res.json());
   }
+  Promise.all(promises).then((values) => {
+    for (let i = 0; i < numberOfItems; i++) {
+      const cartItem = localStorage.getItem(localStorage.key(i));
+      const cartItemObject = JSON.parse(cartItem);
+      const item =  {...values[i], ...cartItemObject};
+      cart.push(item);
+    }
+    cart.forEach((item) => showItem(item));
+  });
+  
+  
 }
 
 function showItem(item) {

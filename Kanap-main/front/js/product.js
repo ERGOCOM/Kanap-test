@@ -16,10 +16,12 @@ function getUrlParams() {
     let imgUrl, altText, dataName;
   }
   
+  // Récupération des données de l'API + ID
   fetch(`http://localhost:3000/api/products/${id}`)
     .then((res) => res.json())
     .then((res) => takeData(res));
   
+  // Création du produit et appel des fonctions
   function takeData(sofa) {
     console.log(sofa);
     const { imageUrl, altTxt, name, description, price, colors } = sofa;
@@ -34,6 +36,7 @@ function getUrlParams() {
     makeColors(colors);
   }
   
+  // Création de l'image
   function makeImage(imageUrl, altTxt) {
     const image = document.createElement("img");
     image.src = imageUrl;
@@ -42,18 +45,22 @@ function getUrlParams() {
     parent.appendChild(image);
   }
   
+  // Création du titre
   function makeTitle(name) {
     document.querySelector("#title").textContent = name;
   }
   
+  // Création du prix
   function makePrice(price) {
     document.querySelector("#price").textContent = price;
   }
   
+  // Création de la déscription
   function makeDescription(description) {
     document.querySelector("#description").textContent = description;
   }
   
+  // Création de la couleur et de ses options 
   function makeColors(colors) {
     const select = document.querySelector("#colors");
   
@@ -65,6 +72,7 @@ function getUrlParams() {
     });
   }
   
+  // Creéation d'un évenement "click" sur le boutton "ajouter au panier
   const button = document.querySelector("#addToCart");
   if (button != null) {
     button.addEventListener("click", (e) => {
@@ -80,9 +88,6 @@ function getUrlParams() {
       id: id,
       color: color,
       quantity: parseInt(quantity),
-      price: itemPrice,
-      imageUrl: imgUrl,
-      altTxt: altText,
     }
     localStorage.setItem(`${id}-${color}`, JSON.stringify(data));
   }
