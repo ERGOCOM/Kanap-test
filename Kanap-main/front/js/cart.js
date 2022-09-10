@@ -1,18 +1,25 @@
 let cart = [];
 
+// Ecoute de l'évenement sur l'envoi du formulaire et création d"un tableau avec fusion de l'api
 takeItems();
 const form = document.querySelector(".cart__order__form");
 form.addEventListener("submit", (e) => sendForm(e));
 
+
+// recupération localstorage création d"un tableau avec fusion de l'api
+
 function takeItems() {
+  const promises = [];
   const numberOfItems = localStorage.length;
   for (let i = 0; i < numberOfItems; i++) {
     const item = localStorage.getItem(localStorage.key(i));
     const itemObject = JSON.parse(item);
     const id = itemObject.id;
+    
     promises[i] =  fetch(`http://localhost:3000/api/products/${id}`)
     .then((res) => res.json());
   }
+  
   Promise.all(promises).then((values) => {
     for (let i = 0; i < numberOfItems; i++) {
       const cartItem = localStorage.getItem(localStorage.key(i));
@@ -22,10 +29,10 @@ function takeItems() {
     }
     cart.forEach((item) => showItem(item));
   });
-  
-  
+
 }
 
+// Affichage des produits dans le panier
 function showItem(item) {
   const article = makeArticle(item);
   const imageDiv = makeImage(item);

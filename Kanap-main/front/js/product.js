@@ -72,7 +72,7 @@ function getUrlParams() {
     });
   }
   
-  // Creéation d'un évenement "click" sur le boutton "ajouter au panier
+  // Creéation d'un évenement "click" sur le boutton "ajouter au panier"
   const button = document.querySelector("#addToCart");
   if (button != null) {
     button.addEventListener("click", (e) => {
@@ -82,9 +82,9 @@ function getUrlParams() {
     });
   }
   
+  // Sauvegarde de certaunes informations dans le localStorage
   function addCart(color, quantity) {
     const data = {
-      name: dataName,
       id: id,
       color: color,
       quantity: parseInt(quantity),
