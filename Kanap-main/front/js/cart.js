@@ -1,13 +1,12 @@
 let cart = [];
 
-// Ecoute de l'évenement sur l'envoi du formulaire et création d"un tableau avec fusion de l'api
+// Ecoute de l'évenement sur l'envoi du formulaire 
 takeItems();
 const form = document.querySelector(".cart__order__form");
 form.addEventListener("submit", (e) => sendForm(e));
 
 
-// recupération localstorage création d"un tableau avec fusion de l'api
-
+// Recupération localstorage création d"un tableau avec fusion de l'api
 function takeItems() {
   const promises = [];
   const numberOfItems = localStorage.length;
@@ -44,12 +43,14 @@ function showItem(item) {
   showTotalPrice();
 }
 
+//Calcul de la quantité totale des articles
 function showTotalQuantity() {
   const totalQuantity = document.querySelector("#totalQuantity");
   const total = cart.reduce((total, item) => total + item.quantity, 0);
   totalQuantity.textContent = total;
 }
 
+//Calcul du prix total des articles 
 function showTotalPrice() {
   const totalPrice = document.querySelector("#totalPrice");
   const total = cart.reduce(
@@ -59,6 +60,7 @@ function showTotalPrice() {
   totalPrice.textContent = total;
 }
 
+// Création du contenu de la description
 function makeCartContent(item) {
   const cardItemContent = document.createElement("div");
   cardItemContent.classList.add("cart__item__content");
@@ -71,6 +73,7 @@ function makeCartContent(item) {
   return cardItemContent;
 }
 
+// Création des contenus des settings
 function makeSettings(item) {
   const settings = document.createElement("div");
   settings.classList.add("cart__item__content__settings");
@@ -80,6 +83,7 @@ function makeSettings(item) {
   return settings;
 }
 
+// Création du bouton supprimer 
 function addDelete(settings, item) {
   const div = document.createElement("div");
   div.classList.add("cart__item__content__settings__delete");
@@ -90,6 +94,8 @@ function addDelete(settings, item) {
   div.appendChild(p);
   settings.appendChild(div);
 }
+
+// Suppression de l'article et nouveau calcul (prix et quantité)
 function deleteItem(item) {
   const itemToDelete = cart.findIndex(
     (product) => product.id === item.id && product.color === item.color
@@ -100,6 +106,8 @@ function deleteItem(item) {
   deleteData(item);
   deleteArticle(item);
 }
+
+//Suppression d'un article en fonction de l'id et color
 function deleteArticle(item) {
   const eraseArticle = document.querySelector(
     `article[data-id="${item.id}"][data-color="${item.color}"]`
@@ -107,6 +115,7 @@ function deleteArticle(item) {
   eraseArticle.remove();
 }
 
+// Création de l'input quantité et possibilité de changer la quantité
 function addQuantity(settings, item) {
   const quantity = document.createElement("div");
   quantity.classList.add("cart__item__content__settings__quantity");
@@ -128,6 +137,7 @@ function addQuantity(settings, item) {
   settings.appendChild(quantity);
 }
 
+// Nouveau calcul des quantités et du prix total
 function newPriceQuantity(id, newValue, item) {
   console.log("newPriceQuantity", id, newValue, item);
   const itemNewValue = cart.find((cartItem) => cartItem.id === id);
@@ -138,17 +148,20 @@ function newPriceQuantity(id, newValue, item) {
   saveNewData(item);
 }
 
+//Suppression de l'article dans le localStorage
 function deleteData(item) {
   const key = `${item.id}-${item.color}`;
   localStorage.removeItem(key);
 }
 
+// Sauvegarde du nouveau calcul dans le localStorage
 function saveNewData(item) {
   const dataToSave = JSON.stringify(item);
   const key = `${item.id}-${item.color}`;
   localStorage.setItem(key, dataToSave);
 }
 
+// Création du contenu de la description
 function makeDescription(item) {
   const description = document.createElement("div");
   description.classList.add("cart__item__content__description");
@@ -166,9 +179,11 @@ function makeDescription(item) {
   return description;
 }
 
+//Rattachement et affichage des articles
 function showArticle(article) {
   document.querySelector("#cart__items").appendChild(article);
 }
+// Création de l'article
 function makeArticle(item) {
   const article = document.createElement("article");
   article.classList.add("cart__item");
@@ -176,6 +191,8 @@ function makeArticle(item) {
   article.dataset.color = item.color;
   return article;
 }
+
+// Création de l'image
 function makeImage(item) {
   const div = document.createElement("div");
   div.classList.add("cart__item__img");
@@ -187,6 +204,7 @@ function makeImage(item) {
   return div;
 }
 
+// POST du formulaire et création d'un bon de commande , Redirection vers la page confirmation
 function sendForm(e) {
   e.preventDefault()
   if (cart.length === 0) {
@@ -195,9 +213,14 @@ function sendForm(e) {
   }
 
   if (notCompleteForm()) return
+  if (notValidFirstName()) return
+  if (notValidLastName()) return
+  if (notValidAdress()) return
+  if (notValidCity()) return
   if (notValidEmail()) return
 
   const body = makeRequest();
+
   fetch("http://localhost:3000/api/products/order", {
     method: "POST",
     body: JSON.stringify(body),
@@ -213,16 +236,68 @@ function sendForm(e) {
     });
 }
 
-function notValidEmail() {
-  const email = document.querySelector("#email").value
-  const regex = /^[A-Za-z0-9+_.-]+@(.+)$/
-  if (regex.test(email) === false) {
-    alert("Entrez un email valide")
+
+// Vérification des saisies du prénom à l'aide de regex
+function notValidFirstName() {
+  const firstName = document.querySelector("#firstName").value
+  const regex = /^[A-Za-z\é\è\ê\ë\ï\ä\-]+$/
+  if (regex.test(firstName) === false) {
+        const firstNameErrorMsg = document.querySelector("#firstNameErrorMsg")
+        firstNameErrorMsg.textContent = "Veuillez entrer un prénom valide"
+      return true
+  }
+  return false
+}
+
+// Vérification des saisies du nom à l'aide de regex
+function notValidLastName() {
+  const lastName = document.querySelector("#lastName").value
+  const regex = /^[A-Za-z\é\è\ê\ë\ï\ä\-]+$/
+  if (regex.test(lastName) === false) {
+    const lastNameErrorMsg = document.querySelector("#lastNameErrorMsg")
+    lastNameErrorMsg.textContent = "Veuillez entrer un nom valide"
     return true
   }
   return false
 }
 
+// Vérification des saisies de l'adresse à l'aide de regex
+function notValidAdress() {
+  const address = document.querySelector("#address").value
+  const regex = /^[0-9]{1,3}(?:(?:[,. ]){1}[-a-zA-Zàâäéèêëïîôöùûüç]+)+$/
+  if (regex.test(address) === false) {
+    const addressErrorMsg = document.querySelector("#addressErrorMsg")
+    addressErrorMsg.textContent = "Veuillez entrer une adresse valide"
+    return true
+  }
+  return false
+}
+
+// Vérification des saisies de la ville à l'aide de regex
+function notValidCity() {
+  const city = document.querySelector("#city").value
+  const regex = /^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/
+  if (regex.test(city) === false) {
+    const cityErrorMsg = document.querySelector("#cityErrorMsg")
+    cityErrorMsg.textContent = "Veuillez entrer une ville valide"
+    return true
+  }
+  return false
+}
+
+// Vérification des saisies de l'email à l'aide de regex
+function notValidEmail() {
+  const email = document.querySelector("#email").value
+  const regex = /^[A-Za-z0-9+_.-]+@(.+)$/
+  if (regex.test(email) === false) {
+    const emailErrorMsg = document.querySelector("#emailErrorMsg")
+    emailErrorMsg.textContent = "Veuillez entrer un email valide"
+    return true
+  }
+  return false
+}
+
+// Vérification du remplissage complet du formulaire
 function notCompleteForm() {
   const form = document.querySelector(".cart__order__form")
   const inputs = form.querySelectorAll("input")
@@ -235,6 +310,7 @@ function notCompleteForm() {
   })
 }
 
+// Création des éléments pour le formulaire
 function makeRequest() {
   const form = document.querySelector(".cart__order__form");
   const firstName = form.elements.firstName.value;
@@ -255,6 +331,7 @@ function makeRequest() {
   return body;
 }
 
+//Récuperation des ids du Localstorage
 function takeIds() {
   const numberOfProducts = localStorage.length;
   const ids = [];

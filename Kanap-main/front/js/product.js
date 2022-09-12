@@ -1,4 +1,4 @@
-// Récupération de la valeur "id" dans l'URL
+// // Localisation et récuperation de l'URL de la page produit
 function getUrlParams() {
     return new Proxy(new URLSearchParams(window.location.search), {
       get: (searchParams, prop) => searchParams.get(prop),
@@ -72,7 +72,7 @@ function getUrlParams() {
     });
   }
   
-  // Creéation d'un évenement "click" sur le boutton "ajouter au panier"
+  // Création d'un évenement "click" sur le boutton "ajouter au panier"
   const button = document.querySelector("#addToCart");
   if (button != null) {
     button.addEventListener("click", (e) => {
