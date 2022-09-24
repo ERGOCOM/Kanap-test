@@ -4,7 +4,8 @@ function getUrlParams() {
       get: (searchParams, prop) => searchParams.get(prop),
     });
   }
-  
+
+  //Récupération des Query Param
   function getQueryParam(param) {
     const params = getUrlParams();
     return params[param];
@@ -82,12 +83,18 @@ function getUrlParams() {
     });
   }
   
-  // Sauvegarde de certaunes informations dans le localStorage
+  // Sauvegarde de certaines informations dans le localStorage
   function addCart(color, quantity) {
-    const data = {
-      id: id,
-      color: color,
-      quantity: parseInt(quantity),
+    let data = {
+    id: id,
+    color: color,
+    quantity: parseInt(quantity),
+    }
+    if (localStorage.getItem(`${id}-${color}`)) {
+    const objString = localStorage.getItem(`${id}-${color}`);
+    const obj = JSON.parse(objString);
+    obj.quantity = obj.quantity + data.quantity;
+    data = obj;
     }
     localStorage.setItem(`${id}-${color}`, JSON.stringify(data));
-  }
+    }
