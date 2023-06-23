@@ -240,7 +240,7 @@ function sendForm(e) {
 // Vérification des saisies du prénom à l'aide de regex
 function notValidFirstName() {
   const firstName = document.querySelector("#firstName").value
-  const regex = /^[A-Za-z\é\è\ê\ë\ï\ä\-]+$/
+  const regex = /^[a-zA-Z\u00C0-\u017F\s]+$/
   if (regex.test(firstName) === false) {
         const firstNameErrorMsg = document.querySelector("#firstNameErrorMsg")
         firstNameErrorMsg.textContent = "Veuillez entrer un prénom valide"
@@ -252,7 +252,7 @@ function notValidFirstName() {
 // Vérification des saisies du nom à l'aide de regex
 function notValidLastName() {
   const lastName = document.querySelector("#lastName").value
-  const regex = /^[A-Za-z\é\è\ê\ë\ï\ä\-]+$/
+  const regex = /^[a-zA-Z\u00C0-\u017F\s]+$/
   if (regex.test(lastName) === false) {
     const lastNameErrorMsg = document.querySelector("#lastNameErrorMsg")
     lastNameErrorMsg.textContent = "Veuillez entrer un nom valide"
