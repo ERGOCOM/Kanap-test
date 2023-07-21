@@ -240,7 +240,7 @@ function sendForm(e) {
 // Vérification des saisies du prénom à l'aide de regex
 function notValidFirstName() {
   const firstName = document.querySelector("#firstName").value
-  const regex = /^[A-Za-z\é\è\ê\ë\ï\ä\-]+$/
+  const regex = /^[a-z ,.'-]+$/
   if (regex.test(firstName) === false) {
         const firstNameErrorMsg = document.querySelector("#firstNameErrorMsg")
         firstNameErrorMsg.textContent = "Veuillez entrer un prénom valide"
