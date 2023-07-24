@@ -4,8 +4,8 @@ fetch("http://localhost:3000/api/products/")
     .then((products) => addProducts(products)) 
     
 // Création d'une boucle for each pour l'affichage des produits
-function addProducts(sofa) {
-    sofa.forEach((kanap) => {
+function addProducts(products) {
+    products.forEach((kanap) => {
         console.log("kanap: " ,kanap)
         const {_id,imageUrl,altTxt,name, description} = kanap
         const image = makeImage(imageUrl, altTxt)
